@@ -136,6 +136,8 @@ php artisan serve  # in a second terminal
 ```bash
 cp .env.example .env   # configure DB_* for MySQL
 npm run docker:dev:up
+npm run docker:dev:exec
+npm run dev
 ```
 
 App: [http://localhost:8000](http://localhost:8000) · Vite: [http://localhost:5173](http://localhost:5173)

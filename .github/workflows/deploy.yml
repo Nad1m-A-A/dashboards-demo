@@ -1,0 +1,56 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5 # clone repo onto the runner
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.4' }
+      - run: composer install
+      # - run: php artisan test --compact
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} # provided automatically, no setup
+      - uses: docker/build-push-action@v6 # 1. build on GitHub's machine
+        with:
+          context: .
+          file: Dockerfile.prod
+          push: true # 2. push to registry
+          tags: ghcr.io/nad1m-a-a/dashboards:latest
+
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:deploy
+
+      - uses: appleboy/ssh-action@v1 # 3. tell server to pull & restart
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/dashboards.nadimweb.com
+            docker compose -f compose.prod.yaml pull app
+            docker compose -f compose.prod.yaml up -d
+            docker compose -f compose.prod.yaml exec app php artisan migrate --force

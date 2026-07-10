@@ -14,10 +14,11 @@ function truncateToDecimals(value: number, decimals: number): number {
 
 /**
  * Formats a number as a compact string for tight UI spaces (charts, cards, badges).
- * Scaled values use three decimal places and a unit suffix (e.g. `m`).
+ * Scaled values keep up to three decimals, trailing zeros stripped, plus a unit suffix.
  *
  * @example formatCompactNumber(8087500) // "8.087m"
- * @example formatCompactNumber(1500000) // "1.500m"
+ * @example formatCompactNumber(1500000) // "1.5m"
+ * @example formatCompactNumber(90000000) // "90m"
  * @example formatCompactNumber(999) // "999"
  */
 export function formatCompactNumber(value: number): string {
@@ -28,7 +29,7 @@ export function formatCompactNumber(value: number): string {
         if (abs >= threshold) {
             const scaled = truncateToDecimals(abs / divisor, FRACTION_DIGITS);
 
-            return `${sign}${scaled.toFixed(FRACTION_DIGITS)}${suffix}`;
+            return `${sign}${Number(scaled.toFixed(FRACTION_DIGITS))}${suffix}`;
         }
     }
 

@@ -28,3 +28,4 @@ yarn-error.log
 /.vscode
 /.zed
 secrets/*
+.app_image_tag

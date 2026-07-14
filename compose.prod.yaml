@@ -1,7 +1,8 @@
 name: prod-dashboards
 services:
   app:
-    image: ghcr.io/nad1m-a-a/dashboards:latest
+    # APP_IMAGE_TAG = full git SHA from CI (see .app_image_tag). Default latest for local use.
+    image: ghcr.io/nad1m-a-a/dashboards:${APP_IMAGE_TAG:-latest}
     secrets:
     - db_password
     - db_root_password

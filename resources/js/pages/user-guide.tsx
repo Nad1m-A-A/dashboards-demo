@@ -566,7 +566,7 @@ export default function UserGuide() {
             <div
                 dir={lang === 'ar' ? 'rtl' : 'ltr'}
                 className={cn(
-                    'flex flex-col gap-4 p-4 max-w-4xl mx-auto w-full bg-red-500!',
+                    'flex flex-col gap-4 p-4 max-w-4xl mx-auto w-full',
                     lang === 'ar' && 'font-cairo',
                 )}
             >

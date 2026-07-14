@@ -2,6 +2,10 @@ name: Deploy
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/workflows/rollback.yml'
+      - '**.md'
+      - 'AGENTS.md'
 
 jobs:
   test:

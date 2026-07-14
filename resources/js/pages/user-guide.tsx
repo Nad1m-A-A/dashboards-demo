@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import { ChevronDownIcon, ChevronRight, ChevronsDownIcon, Loader, TrendingDown, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import ComparisonDiffBadge from '@/components/custom/ComparisonDiffBadge';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -47,24 +46,6 @@ type GuideSectionDef = {
     ar: { title: string };
     items: GuideItemDef[];
 };
-
-// ─── Method badge helper (mirrors ActivityTable) ───────────────────────────────
-
-const METHOD_STYLES: Record<string, string> = {
-    GET: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-    POST: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-    PUT: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    PATCH: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
-    DELETE: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-};
-
-function MethodBadge({ method }: { method: string }) {
-    return (
-        <Badge variant="outline" className={METHOD_STYLES[method] ?? ''}>
-            {method}
-        </Badge>
-    );
-}
 
 // ─── Content ──────────────────────────────────────────────────────────────────
 
@@ -585,7 +566,7 @@ export default function UserGuide() {
             <div
                 dir={lang === 'ar' ? 'rtl' : 'ltr'}
                 className={cn(
-                    'flex flex-col gap-4 p-4 max-w-4xl mx-auto w-full',
+                    'flex flex-col gap-4 p-4 max-w-4xl mx-auto w-full bg-red-500!',
                     lang === 'ar' && 'font-cairo',
                 )}
             >
